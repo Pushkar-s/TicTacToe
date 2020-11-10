@@ -10,6 +10,33 @@
         return false; 
     } 
 
+    function eval() {
+        var gameover = false;
+        for (var row = 0; row < 3; row ++) {
+            var ch = board[row][0],flag = true;
+            if (ch == '_') break;
+            for (var col = 0; col < 3; col ++) {
+                if (board[row][col] != ch) flag = false;
+            }
+            gameover |= flag;
+        }
+
+        for (var col = 0; col < 3; col ++) {
+            var ch = board[0][col],flag = true;
+            if (ch == '_') break;
+            for (var row = 0; row < 3; row ++) {
+                if (board[row][col] != ch) flag = false;
+            }
+            gameover |= flag;
+        }
+
+        if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != '_') gameover |= true;
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '_') gameover |= true;
+
+        // if (gameover) alert("holy shit game over");
+        return gameover;
+    }
+
     function evaluate() 
     { 
         
@@ -177,6 +204,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[1].onclick = function() {
         if (blucircl[1].style.visibility == "visible" || crs[2*1].style.visibility == "visible") return;
@@ -187,6 +215,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[2].onclick = function() {
         if (blucircl[2].style.visibility == "visible" || crs[2*2].style.visibility == "visible") return;
@@ -197,6 +226,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
 
 
@@ -209,6 +239,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[5].onclick = function() {
         if (blucircl[4].style.visibility == "visible" || crs[2*4].style.visibility == "visible") return;
@@ -219,6 +250,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[6].onclick = function() {
         if (blucircl[5].style.visibility == "visible" || crs[2*5].style.visibility == "visible") return;
@@ -229,6 +261,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
 
 
@@ -241,6 +274,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[9].onclick = function() {
         if (blucircl[7].style.visibility == "visible" || crs[2*7].style.visibility == "visible") return;
@@ -251,6 +285,7 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
     mtgrd[10].onclick = function() {
         if (blucircl[8].style.visibility == "visible" || crs[2*8].style.visibility == "visible") return;
@@ -261,4 +296,5 @@
             idx = bestMoverow*3 + bestMovecol;
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
+            if (eval()) alert("holy shit game over- band baja di 🤣😎");
     }
