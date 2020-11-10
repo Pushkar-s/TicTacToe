@@ -252,7 +252,9 @@ main {
         width: 16rem;
         /*but its instant we need to animate the transition*/
     }
-
+    section {
+        padding-left: 20rem;
+    }
     .navbar:hover .link-text {
         display: block;
     }
