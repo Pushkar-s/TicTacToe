@@ -1,0 +1,18 @@
+.grid {
+    display: grid;
+    gap: 0rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* grid-template-columns: repeat(auto-fit,minmax(400px,1fr)); 240 for 4 in a row */
+    /* grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); */
+    /*difference b/w auto fill and auto fit  is auto fit will stretch cards into full screen if there are only two cards*/
+}
+
+section {
+    width: fit-content;
+}
+
+svg {
+    visibility: visible;
+    width: 9rem;
+    transform: translate(0,0);
+}
