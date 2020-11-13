@@ -1,12 +1,14 @@
     var player = 'x', opponent = 'o'; 
     var bestMoverow = -1,bestMovecol = -1; 
-    var cnt;
+    var cnt1,cnt2;
+    var INF = 1000;
 
-    function isMovesLeft(board) 
+    function isMovesLeft(board,minimaxtype) 
     { 
         for (var i = 0; i<3; i++) {
             for (var j = 0; j<3; j++) {
-                cnt++;
+                if (minimaxtype) cnt1++;
+                else cnt2++;
                 if (board[i][j]=='_') 
                     return true; 
             }
@@ -14,13 +16,13 @@
         return false; 
     } 
 
-    function eval(board) {
+    function eval(board,minimaxtype) {
         var gameover = false;
         for (var row = 0; row < 3; row ++) {
             var ch = board[row][0],flag = true;
             if (ch == '_') break;
             for (var col = 0; col < 3; col ++) {
-                cnt++;
+                if (minimaxtype) cnt1++; else cnt2++;
                 if (board[row][col] != ch) flag = false;
             }
             gameover |= flag;
@@ -30,7 +32,7 @@
             var ch = board[0][col],flag = true;
             if (ch == '_') break;
             for (var row = 0; row < 3; row ++) {
-                cnt++;
+                if (minimaxtype) cnt1++; else cnt2++;
                 if (board[row][col] != ch) flag = false;
             }
             gameover |= flag;
@@ -42,7 +44,7 @@
         return gameover;
     }
 
-    function evaluate(board) 
+    function evaluate(board,minimaxtype) 
     { 
         
         for (var row = 0; row<3; row++) 
@@ -50,7 +52,7 @@
             if (board[row][0]==board[row][1] && 
                 board[row][1]==board[row][2] && board[row][2] != '_')
             { 
-                cnt++;
+                if (minimaxtype) cnt1++; else cnt2++;
                 if (board[row][0]==player) 
                     return +10; 
                 else if (board[row][0]==opponent) 
@@ -62,7 +64,7 @@
             if (board[0][col]==board[1][col] && 
                 board[1][col]==board[2][col] && board[2][col] != '_') 
             { 
-                cnt++;
+                if (minimaxtype) cnt1++; else cnt2++;
                 if (board[0][col]==player) 
                     return +10; 
                 else if (board[0][col]==opponent) 
@@ -88,13 +90,100 @@
         return 0; 
     } 
 
-    function minimax( board,depth,isMax) 
+    function minimax_optimized( board,depth,isMax,alpha,beta) 
     { 
-        var score = evaluate(board); 
+        var score = evaluate(board,0); 
         if (score == 10) return score - depth; 
         if (score == -10) return score + depth; 
-        if (isMovesLeft(board)==false) return 0; 
+        if (isMovesLeft(board,0)==false) return 0; 
 
+        if (isMax) 
+        { 
+            var best_score = -1000; 
+            for (var i = 0; i<3; i++) 
+            { 
+                for (var j = 0; j<3; j++) 
+                { 
+                    if (board[i][j]=='_') 
+                    { 
+                        board[i][j] = player; 
+                        cnt2++;
+                        var cur_score = minimax_optimized(board,depth+1,!isMax,alpha,beta); 
+                        board[i][j] = '_'; 
+                        if (best_score < cur_score) {
+                            best_score = cur_score - depth;
+                            alpha = Math.max(alpha,best_score);
+                            if (beta <= alpha) {
+                                return best_score;
+                            }
+                        }
+                    } 
+                } 
+            } 
+            return best_score; 
+        } 
+        else
+        { 
+            var best_score = 1000; 
+            for (var i = 0; i<3; i++) 
+            { 
+                for (var j = 0; j<3; j++) 
+                { 
+                    if (board[i][j]=='_') 
+                    { 
+                        board[i][j] = opponent; 
+                        cnt2++;
+                        var cur_score = minimax_optimized(board,depth+1, !isMax,alpha,beta); 
+                        board[i][j] = '_'; 
+                        if (best_score > cur_score) {
+                            best_score = cur_score + depth;
+                            beta = Math.min(beta,best_score);
+                            if (beta <= alpha) {
+                                return best_score;
+                            }
+                        }
+                    } 
+                } 
+            } 
+            return best_score; 
+        } 
+    } 
+
+    function findBestMoveWithAlphaBetaPruning(board) 
+    { 
+        var bestVal = -1000; 
+        bestMoverow = -1; 
+        bestMovecol = -1; 
+        var alpha = -1000,beta = 1000;
+        for (var i = 0; i<3; i++) 
+        { 
+            for (var j = 0; j<3; j++) 
+            { 
+                if (board[i][j]=='_') 
+                { 
+                    board[i][j] = player; 
+                    var moveVal = minimax_optimized(board,0,false,alpha,beta); 
+                    board[i][j] = '_'; 
+                    cnt2++;
+                    if (moveVal > bestVal) 
+                    { 
+                        bestMoverow = i; 
+                        bestMovecol = j; 
+                        bestVal = moveVal; 
+                    } 
+                } 
+            } 
+        } 
+
+    } 
+
+    function minimax( board,depth,isMax) 
+    { 
+        var score = evaluate(board,1); 
+        if (score == 10) return score - depth; 
+        if (score == -10) return score + depth; 
+        if (isMovesLeft(board,1)==false) return 0; 
+    
         if (isMax) 
         { 
             var best = -1000; 
@@ -105,7 +194,7 @@
                     if (board[i][j]=='_') 
                     { 
                         board[i][j] = player; 
-                        cnt++;
+                        cnt1++;
                         best = Math.max( best, 
                             minimax(board,depth+1, !isMax) ); 
                         board[i][j] = '_'; 
@@ -124,19 +213,20 @@
                     if (board[i][j]=='_') 
                     { 
                         board[i][j] = opponent; 
-                        cnt++;
+                        cnt1++;
                         best = Math.min(best, 
                             minimax(board,depth+1, !isMax)); 
-
+    
                         board[i][j] = '_'; 
                     } 
                 } 
             } 
             return best; 
         } 
-    } 
+    }
 
-    function findBestMove(board) 
+
+    function findBestMoveWithoutAlphaBetaPruning(board) 
     { 
         var bestVal = -1000; 
         bestMoverow = -1; 
@@ -151,7 +241,7 @@
                     board[i][j] = player; 
                     var moveVal = minimax(board,0, false); 
                     board[i][j] = '_'; 
-                    cnt++;
+                    cnt1++;
                     if (moveVal > bestVal) 
                     { 
                         bestMoverow = i; 
@@ -162,12 +252,13 @@
             } 
         } 
 
-    } 
+    }
 
     // Driver code 
     function tellmove(board) 
     { 
-        var ans = findBestMove(board); 
+        var ans = findBestMoveWithoutAlphaBetaPruning(board);
+        ans = findBestMoveWithAlphaBetaPruning(board); 
         return 0; 
     } 
 
@@ -189,19 +280,24 @@
             crs[2*i + 1].style.visibility = "hidden";
             blucircl[i].style.visibility = "hidden";
         }
+        document.getElementById("winStatusWithoutPruning").style.visibility = "hidden";
         board = [ 
             ['_','_','_'],
             ['_','_','_'],
             ['_','_','_']
         ];
-        cnt = 0;
+        cnt2 = 0;
+        cnt1 = 0;
     }
 
     var idx;
     function winstatus(idx) {
         if (crs[2*idx].style.visibility == "visible" && crs[2*idx + 1].style.visibility == "visible") {
             // do it with else
-            alert("Game over");alert(cnt);
+            // alert("OY Game over");alert(cnt);
+            document.getElementById("winStatusWithoutPruning").style.visibility = "visible";
+            document.getElementById("countWithPruning").innerText = cnt2;
+            document.getElementById("countWithoutPruning").innerText = cnt1;
         }else {
             setTimeout(winstatus(idx), 300);
         }

@@ -113,7 +113,7 @@
             
             <% for (var col=0; col<3; col++) { %>
                 <div>
-                    <svg class="matrixgrid" style="visibility: visible;" width = "9rem" transform="translate(0,0)">
+                    <svg class="matrixgrid" style="visibility: visible; height: 2rem;" width = "9rem" transform="translate(0,0)">
                         <g class="game-row" transform="translate(0,0)">
                         <g class="game-cell" transform="translate(0,0)">
                             <circle cx="10" cy="10" r="5" stroke="black" stroke-width="6" fill="black" />
@@ -128,7 +128,7 @@
             <% } %>      
             
             <div>
-                <svg class="matrixgrid" style="visibility: visible;" width = "9rem" transform="translate(0,0)">
+                <svg class="matrixgrid" style="visibility: visible; height: 2rem;" width = "9rem" transform="translate(0,0)">
                     <g class="game-row" transform="translate(0,0)">
                     <g class="game-cell" transform="translate(0,0)">
                         <circle cx="10" cy="10" r="5" stroke="black" stroke-width="6" fill="black" />
@@ -138,6 +138,24 @@
             </div>   
     
         </section>
+
+        <section class="grid" id="winStatusWithoutPruning" style="visibility: hidden;">
+            <div>
+                <p>Game Status:</p>
+                <p style="border: 1px solid black; padding: 1rem;"> YOU LOST</p>
+            </div>
+            <div></div>
+            <div>
+                <p>No of Calculations Without Alpha Beta Pruning:</p>
+                <p id="countWithoutPruning" style="border: 1px solid black; padding: 1rem;"> 9980</p>
+            </div>
+            <div></div>
+            <div>
+                <p>No of Calculations With Alpha Beta Pruning:</p>
+                <p id="countWithPruning" style="border: 1px solid black; padding: 1rem;"> 9980</p>
+            </div>
+        </section>
+
     </main>
 
     
