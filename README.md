@@ -1,7 +1,8 @@
 # TicTacToe
 TicTacToe game played with Computer AI
 
-Members: 
+# Members:
+
 Pushkar Soni
 
 Mradul Bohra
