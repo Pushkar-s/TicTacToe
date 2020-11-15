@@ -7,7 +7,11 @@ app.use(express.static(__dirname+"/public"));
 
 
 app.get("/",function(req,res){
-    res.render("index.ejs",{user:req.user});
+    res.render("index.ejs");
+});
+
+app.get("/ourteam", function(req,res) {
+    res.render("ourteam.ejs");
 });
 
 

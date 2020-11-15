@@ -254,12 +254,14 @@
 
     }
 
+
+
     // Driver code 
     function tellmove(board) 
     { 
         var ans = findBestMoveWithoutAlphaBetaPruning(board);
         ans = findBestMoveWithAlphaBetaPruning(board); 
-        return 0; 
+        return ans; 
     } 
 
     // tellmove();
@@ -405,4 +407,91 @@
             crs[2*idx + 0].style.visibility = "visible";
             crs[2*idx + 1].style.visibility = "visible";
             if (eval(board)) winstatus(idx); 
+    }
+
+
+    // =====================================================
+
+    var randomPlay = document.getElementById("GenrateRandom");
+
+    function MovesLeft(board) 
+    { 
+        for (var i = 0; i<3; i++) {
+            for (var j = 0; j<3; j++) {
+                if (board[i][j]=='_') 
+                    return true; 
+            }
+        }
+        return false; 
+    } 
+    var randomMoverow = -1,randomMovecol = -1,draw = 0, win = 0, lose = 0; 
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+    }
+      
+
+    function randomMove(board) {
+        var moveDone = false;
+        while (!moveDone) {
+            var idx = getRandomInt(9);
+            /*
+                [0 1 2],
+                [3 4 5],
+                [6 7 8]
+            */
+           var i = Math.floor(idx/3);
+           var j = idx%3;
+           if (board[i][j] == '_') {
+                randomMoverow = i;
+                randomMovecol = j;
+                break;
+           }
+        }
+    }
+
+    randomPlay.onclick = function() {
+        var no_of_games = 100;
+        for (var i=0; i<no_of_games; i++) {
+            // alert(i);
+            var board = [ 
+                ['_','_','_'],
+                ['_','_','_'],
+                ['_','_','_']
+            ];
+            var curStatus = eval(board);
+            var turn = 0;
+            while (!curStatus) {
+                if (MovesLeft(board) == false) {
+                    draw++;
+                    break;
+                } 
+                curStatus = eval(board);
+                if (eval(board)) break;
+                if (!turn) {
+                    randomMove(board);
+                    board[randomMoverow][randomMovecol] = 'o';
+                    curStatus = eval(board);
+                    if (curStatus) {
+                        lose++;
+                        alert(board[0][0] + board[0][1] + board[0][2] + board[1][0]+board[1][1]+board[1][2] +board[2][0]+board[2][1]+board[2][2]);
+                        break;
+                    }
+                    turn = !turn;
+                } else {
+                    var ans = tellmove(board);
+                    if (ans == 0) {
+                        draw++;
+                        break;
+                    }
+                    board[bestMoverow][bestMovecol] = 'x';
+                    curStatus = eval(board);
+                    if (curStatus) {
+                        win++;
+                        break;
+                    }
+                    turn = !turn;
+                }
+                curStatus = eval(board);
+            }
+        }
     }

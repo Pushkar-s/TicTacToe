@@ -3,6 +3,16 @@
     gap: 0rem;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+.grid1 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); 
+}
+.grid2 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr; 
+}
 
 section {
     width: fit-content;
@@ -17,12 +27,17 @@ svg {
 
 :root {
     font-size: 16px;
-    font-family: 'Open Sans';
+    /* font-family: 'Open Sans'; */
+    font-family: "sofia-pro",sans-serif;
     --text-primary : #b6b6b6;
     --text-secondary : #ececec;
     --bg-primary : #23232e;
+    --card-bg : #2a2e35;
+    --card-shadow : 0 4px 8px rgba(0,0,0,0.38);
+    --card-radius : 0.25em;
+    --text-color : #b2becd;
     --bg-secondary : #141418;
-    --transition-speed : 600ms;
+    --transition-speed: 600ms;
 }
 
 /* html {
@@ -263,3 +278,30 @@ main {
 
 
 /* ============================================================================= */
+
+
+
+
+
+.card {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 0;
+    box-shadow: var(--card-shadow);
+    display: inline-flex;
+    flex-direction: column;
+    margin: 0 0 1em;
+    width: 100%;
+    transform: translateY(0);
+    border-radius: var(--card-radius);
+}
+
+.card-content {
+    padding: 1rem;
+}
+.card-content h3{
+    color: white;
+}
+.card-content p {
+    color: gray;
+}

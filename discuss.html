@@ -1,0 +1,55 @@
+
+def findBestMove ():
+    bestMove = 0
+    forEach Move in board :
+        if this move has better score :
+            bestMove = this Move 
+
+    return bestMove
+            
+
+
+def minimax(level, player)  // maximizing player -> AI
+    if (gamefinished ):
+        return Current score
+    if no Moves left : 
+        return 0 
+
+    if (player is computer,that is  maximizing player):
+        // find max
+        bestScore = -inf
+        for each Remaining Move :
+            score = minimax(level + 1, opponent)
+            if (score > bestScore) bestScore = score
+        return bestScore
+    else (player is opponent, that is minimizing player):
+        // find min
+        bestScore = +inf
+        for each Remaining Move
+            score = minimax(level - 1, computer)
+            if (score < bestScore) bestScore = score
+        return bestScore
+ 
+
+
+
+minimax(level, player, alpha, beta)  // player may be "computer" or "opponent"
+    if (gamefinished) 
+        return Current score
+    
+    if (player is computer,that is  maximizing player):
+        // Find max and store in alpha
+        for each Remaining Move :
+            score = minimax(level + 1, opponent, alpha, beta)
+            if (score > alpha) alpha = score
+            if (alpha >= beta) break;  // beta cut-off
+        return alpha
+    else (player is opponent, that is minimizing player):
+        // Find min and store in beta
+        for each Remaining Move :
+            score = minimax(level + 1, computer, alpha, beta)
+            if (score < beta) beta = score
+            if (alpha >= beta) break;  // alpha cut-off
+        return beta
+
+minimax(2, computer, -inf, +inf) // initial call
